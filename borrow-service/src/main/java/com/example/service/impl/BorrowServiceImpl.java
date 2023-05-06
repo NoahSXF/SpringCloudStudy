@@ -6,8 +6,9 @@ import com.example.entity.BorrowDetail;
 import com.example.entity.User;
 import com.example.mapper.BorrowMapper;
 import com.example.service.BorrowService;
+import com.example.service.client.BookClient;
+import com.example.service.client.UserClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,8 +27,14 @@ public class BorrowServiceImpl implements BorrowService {
     @Resource
     BorrowMapper mapper;
 
+//    @Resource
+//    RestTemplate restTemplate;
+
     @Resource
-    RestTemplate restTemplate;
+    UserClient userClient;
+
+    @Resource
+    BookClient bookClient;
 
     @Override
     public Borrow getBorrowById(int id) {
@@ -37,16 +44,26 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public BorrowDetail getUserBorrow(int uid) {
         List<Borrow> borrows = mapper.getBorrowByUid(uid);
-
-//        调用远程服务
-//        RestTemplate restTemplate = new RestTemplate();
-//        User user = restTemplate.getForObject("http://localhost:8101/user/" + uid, User.class);
-//        List<Book> bookList = borrows.stream().map(b -> restTemplate.getForObject("http://localhost:8201/book/" + b.getBid(), Book.class)).collect(Collectors.toList());
-//        return new BorrowDetail(user, bookList);
-
-//        使用注册中心调用外部系统
-        User user = restTemplate.getForObject("http://userService/user/" + uid, User.class);
-        List<Book> bookList = borrows.stream().map(b -> restTemplate.getForObject("http://bookService/book/" + b.getBid(), Book.class)).collect(Collectors.toList());
+        User user = userClient.findUserById(uid);
+        List<Book> bookList = borrows.stream().map(b -> bookClient.findUserById(b.getBid())).collect(Collectors.toList());
         return new BorrowDetail(user, bookList);
     }
+
+//    不使用Template，使用Feign
+//    @Override
+//    public BorrowDetail getUserBorrow(int uid) {
+//        List<Borrow> borrows = mapper.getBorrowByUid(uid);
+//
+////        调用远程服务
+////        RestTemplate restTemplate = new RestTemplate();
+////        User user = restTemplate.getForObject("http://localhost:8101/user/" + uid, User.class);
+////        List<Book> bookList = borrows.stream().map(b -> restTemplate.getForObject("http://localhost:8201/book/" + b.getBid(), Book.class)).collect(Collectors.toList());
+////        return new BorrowDetail(user, bookList);
+//
+////        使用注册中心调用外部系统
+//        User user = restTemplate.getForObject("http://userService/user/" + uid, User.class);
+//        List<Book> bookList = borrows.stream().map(b -> restTemplate.getForObject("http://bookService/book/" + b.getBid(), Book.class)).collect(Collectors.toList());
+//        return new BorrowDetail(user, bookList);
+//    }
+
 }
