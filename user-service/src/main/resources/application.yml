@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.19:3306/springCloudStudy?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/springCloudStudy?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: root
     password: Je2*.n$Qj55VU
   application:
@@ -9,4 +9,4 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8888/eureka
+      defaultZone: http://localhost:8801/eureka , http://localhost:8802/eureka
