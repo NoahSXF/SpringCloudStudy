@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Description: TODO
  * @Version: 1.0
  */
-@FeignClient("bookService")
+@FeignClient(value = "bookService", fallback = BookFallbackClient.class)
 public interface BookClient {
     @RequestMapping("/book/{bid}")
     public Book findUserById(@PathVariable("bid") int bid);

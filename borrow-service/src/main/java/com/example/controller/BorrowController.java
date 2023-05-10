@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.entity.BorrowDetail;
 import com.example.service.BorrowService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +26,7 @@ public class BorrowController {
 //        return borrowService.getBorrowById(id);
 //    }
 
-    @HystrixCommand(fallbackMethod = "onError")
+//    @HystrixCommand(fallbackMethod = "onError")
     @RequestMapping("/borrow/{uid}")
     public BorrowDetail findUserByUid(@PathVariable("uid") int uid) {
         return borrowService.getUserBorrow(uid);

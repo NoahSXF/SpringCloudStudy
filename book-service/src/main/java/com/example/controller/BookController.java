@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @BelongsProject: SpringCloundStudy
@@ -22,7 +23,8 @@ public class BookController {
     BookService bookService;
 
     @RequestMapping("/book/{bid}")
-    public Book findUserById(@PathVariable("bid") int bid) {
+    public Book findUserById(@PathVariable("bid") int bid, HttpServletRequest request) {
+        System.out.println(request.getHeader("Test"));
         return bookService.getBookById(bid);
     }
 }
